@@ -56,7 +56,7 @@ function createPlayer(playerObj) {
   return $newPlayer;
 }
 
-function playerWin(condition) {
+function showSelectedWinner(condition) {
   const $winTitle = createElement("div", "winTitle");
   const characterOne = document.querySelector(".player1 .character");
   const characterTwo = document.querySelector(".player2 .character");
@@ -70,16 +70,12 @@ function playerWin(condition) {
       $winTitle.innerText = player2.name + " WINS!";
       characterOne.classList.add("loser");
       characterTwo.classList.add("winner");
-      break;
-    case "drawngame":
-      $winTitle.innerText = "NO WINNER...";
-      characterOne.classList.add("winner");
-      characterTwo.classList.add("winner");
-      break;
+      break;  
   };
     
-  $randomButton.removeEventListener("click", changeHP);
+  $randomButton.removeEventListener("click", handlerChangeHP);
   $randomButton.innerText = "RESTART"
+  $randomButton.style.backgroundColor = "green"
   $randomButton.addEventListener("click", restart);
 
   return $winTitle;
@@ -89,29 +85,29 @@ function restart() {
   location.reload();  
 }
 
-function random() {
-  return Math.floor(Math.random() * 20 + 1);
+function defineWinner() {  
+  if (player1.hp === 0 && player1.hp < player2.hp) $arena.appendChild(showSelectedWinner("player2"));
+  if (player2.hp === 0 && player1.hp > player2.hp) $arena.appendChild(showSelectedWinner("player1"));   
 }
 
-function changeHP() {
-  const $player1Life = document.querySelector(".player1 .life");
-  const $player2Life = document.querySelector(".player2 .life");
+function changeHP(playerObj) {
+  if (document.querySelector(".winTitle")) return;
+  const $playerLife = document.querySelector(".player" + playerObj.player + " .life");  
 
-  player1.hp -= random();
-  player2.hp -= random();
-
-  if (player1.hp < 0) player1.hp = 0;
-  if (player2.hp < 0) player2.hp = 0;
-
-  $player1Life.style.width = player1.hp + "%";
-  $player2Life.style.width = player2.hp + "%";
-
-  if (player1.hp === 0 && player1.hp < player2.hp) $arena.appendChild(playerWin("player2"));
-  if (player2.hp === 0 && player1.hp > player2.hp) $arena.appendChild(playerWin("player1"));
-  if (player1.hp === 0 && player2.hp === 0) $arena.appendChild(playerWin("drawngame"));  
+  playerObj.hp -= Math.floor(Math.random() * 20 + 1);
+  if (playerObj.hp < 0) playerObj.hp = 0;
+  $playerLife.style.width = playerObj.hp + "%";
+  
+  if (playerObj.hp > 0) return;
+  defineWinner();  
 }
 
-$randomButton.addEventListener("click", changeHP);
+function handlerChangeHP() {
+  changeHP(player1);
+  changeHP(player2);
+}
+
+$randomButton.addEventListener("click", handlerChangeHP);
 
 $arena.appendChild(createPlayer(player1));
 $arena.appendChild(createPlayer(player2));
