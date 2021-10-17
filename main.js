@@ -94,7 +94,7 @@ function changeHP(playerObj) {
   if (document.querySelector(".winTitle")) return;
   const $playerLife = document.querySelector(".player" + playerObj.player + " .life");  
 
-  playerObj.hp -= Math.floor(Math.random() * 20 + 1);
+  playerObj.hp -= random();
   if (playerObj.hp < 0) playerObj.hp = 0;
   $playerLife.style.width = playerObj.hp + "%";
   
@@ -105,6 +105,10 @@ function changeHP(playerObj) {
 function handlerChangeHP() {
   changeHP(player1);
   changeHP(player2);
+}
+
+function random() {
+  return Math.floor(Math.random() * 20 + 1);
 }
 
 $randomButton.addEventListener("click", handlerChangeHP);
