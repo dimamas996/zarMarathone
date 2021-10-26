@@ -1,3 +1,6 @@
+import {player1, player2} from "./players.js";
+import {getRandom, getCurrentTime, createReloadButton} from "./utils.js";
+
 const $arena = document.querySelector(".arenas");
 const $submitFightBtn = document.querySelector(".button");
 const $formFight = document.querySelector(".control");
@@ -51,35 +54,7 @@ const logs = {
   draw: "Ничья - это тоже победа!",
 };
 
-const player1 = {
-  player: 1,
-  name: "LIU KANG",
-  hp: 100,
-  img: "http://reactmarathon-api.herokuapp.com/assets/liukang.gif",
-  weapon: ["AK-47", "Katana"],
-  attack: function () {
-    console.log(`${this.name} Fight...`);
-  },
-  changeHP,
-  elHP,
-  renderHP,
-};
-
-const player2 = {
-  player: 2,
-  name: "KITANA",
-  hp: 100,
-  img: "http://reactmarathon-api.herokuapp.com/assets/kitana.gif",
-  weapon: ["Glock", "Knife"],
-  attack: function () {
-    console.log(`${this.name} Fight...`);
-  },
-  changeHP,
-  elHP,
-  renderHP,
-};
-
-function createElement(tag, className) {
+export function createElement(tag, className) {
   const $tag = document.createElement(tag);
 
   if (className) {
@@ -137,33 +112,7 @@ function showSelectedWinner(condition) {
   return $winTitle;
 }
 
-function changeHP(damage) {
-  this.hp -= damage;
-  if (this.hp < 0) this.hp = 0;
-}
 
-function elHP() {  
-  return document.querySelector(`.player${this.player} .life`)
-}
-
-function renderHP() {
-  this.elHP().style.width = `${this.hp}%`;
-}
-
-function createReloadButton() {
-  const div = createElement("div", "reloadWrap");
-  const btn = createElement("button", "button");
-  btn.innerText = "Restart";
-  btn.addEventListener("click", function () {
-    window.location.reload();
-  });
-  div.appendChild(btn);
-  return div;
-}
-
-function getRandom(maxValue) {
-  return Math.floor(Math.random() * maxValue + 1);
-}
 
 function enemyAttack() {
   const hit = ATTACK[getRandom(3) - 1];
@@ -192,15 +141,6 @@ function playerAttack() {
     item.checked = false;
   }
   return attack;
-}
-
-function getCurrentTime() {
-  const date = new Date();
-  const options = {
-    hour: "numeric",
-    minute: "numeric",
-  };
-  return date.toLocaleString("ru", options);
 }
 
 function generateLogs(type, player1, player2, hp) {
@@ -243,6 +183,8 @@ function generateLogs(type, player1, player2, hp) {
   $chat.insertAdjacentHTML("afterbegin", element);
 }
 
+
+
 function winnerSelection() {
   if (player1.hp === 0 || player2.hp === 0) {
     $submitFightBtn.disabled = true;
@@ -265,9 +207,9 @@ function winnerSelection() {
 }
 
 $formFight.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const enemy = enemyAttack();
+  e.preventDefault();  
   const player = playerAttack();
+  const enemy = enemyAttack();
 
   if (player.defence !== enemy.hit) {
     player1.changeHP(enemy.value);
