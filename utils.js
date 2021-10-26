@@ -1,6 +1,5 @@
-import {createElement} from "./main.js";
-
 export const getRandom = (maxValue) => Math.floor(Math.random() * maxValue + 1);
+
 export function getCurrentTime() {
   const date = new Date();
   const options = {
@@ -19,4 +18,12 @@ export function createReloadButton() {
   return div;
 }
 
+export function createElement(tag, className) {
+  const $tag = document.createElement(tag);
 
+  if (className) {
+    $tag.classList.add(className);
+  }
+
+  return $tag;
+}
