@@ -1,29 +1,51 @@
-import {changeHP, elHP, renderHP} from "./playerMethods.js";
+import { createElement } from "./utils.js";
 
-export const player1 = {
-  player: 1,
-  name: "LIU KANG",
-  hp: 100,
-  img: "http://reactmarathon-api.herokuapp.com/assets/liukang.gif",
-  weapon: ["AK-47", "Katana"],
-  attack: function () {
-    console.log(`${this.name} Fight...`);
-  },
-  changeHP,
-  elHP,
-  renderHP,
-};
+export class Player {
+  constructor(properties) {
+    this.player = properties.player;
+    this.name = properties.name;
+    this.hp = properties.hp;
+    this.img = properties.img;
+    this.weapon = properties.weapon;
+  }
 
-export const player2 = {
-  player: 2,
-  name: "KITANA",
-  hp: 100,
-  img: "http://reactmarathon-api.herokuapp.com/assets/kitana.gif",
-  weapon: ["Glock", "Knife"],
-  attack: function () {
+  attack = () => {
     console.log(`${this.name} Fight...`);
-  },
-  changeHP,
-  elHP,
-  renderHP,
-};
+  }
+
+  changeHP = (damage) => {
+    this.hp -= damage;
+    if (this.hp < 0) this.hp = 0;
+  }
+  
+  elHP = () => {
+    return document.querySelector(`.player${this.player} .life`);
+  }
+
+  renderHP = () => {
+    this.elHP().style.width = `${this.hp}%`;
+  }
+
+  createPlayerInDOM = () => {
+    const $newPlayer = createElement("div", `player${this.player}`);
+    const $progress = createElement("div", "progressbar");
+    const $newPlayerLife = createElement("div", "life");
+    const $newPlayerName = createElement("div", "name");
+    const $newCharacter = createElement("div", "character");
+    const $newCharacterImg = createElement("img");
+
+    $newPlayerLife.style.width = `${this.hp}%`;
+    $newPlayerName.textContent = this.name;
+    $newCharacterImg.src = this.img;
+
+    $progress.appendChild($newPlayerName);
+    $progress.appendChild($newPlayerLife);
+
+    $newCharacter.appendChild($newCharacterImg);
+
+    $newPlayer.appendChild($progress);
+    $newPlayer.appendChild($newCharacter);
+
+    return $newPlayer;
+  }
+}
