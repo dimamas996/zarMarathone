@@ -1,10 +1,6 @@
-import {getCurrentTime} from "./utils.js";
-import { startLog } from "./main.js";
-import { getRandom } from "./utils.js";
-
-const $chat = document.querySelector(".chat");
-
 export const logs = {
+  start:
+    "Часы показывали [time], когда [player1] и [player2] бросили вызов друг другу.",
   end: [
     "Результат удара [playerWins]: [playerLose] - труп",
     "[playerLose] погиб от удара бойца [playerWins]",
@@ -43,42 +39,9 @@ export const logs = {
   draw: "Ничья - это тоже победа!",
 };
 
-export function generateLogs(type, player1, player2, hp) {
-  let text = "";
-  let element = "";
-
-  switch (type) {
-    case "start":
-      text = startLog
-        .replace("[player1]", player1.name)
-        .replace("[player2]", player2.name)
-        .replace("[time]", getCurrentTime());
-      element = `<p>${text}</p>`;
-      break;
-    case "end":
-      text = logs[type][getRandom(logs[type].length - 1)]
-        .replace("[playerWins]", player1.name)
-        .replace("[playerLose]", player2.name);
-      element = `<p>${text}</p>`;
-      break;
-    case "hit":
-      text = logs[type][getRandom(logs[type].length - 1)]
-        .replace("[playerDefence]", player1.name)
-        .replace("[playerKick]", player2.name);
-      element = `<p>${getCurrentTime()} - ${text} -${hp} [${
-        player1.hp
-      }/100]</p>`;
-      break;
-    case "defence":
-      text = logs[type][getRandom(logs[type].length - 1)]
-        .replace("[playerDefence]", player1.name)
-        .replace("[playerKick]", player2.name);
-      element = `<p>${getCurrentTime()} - ${text}</p>`;
-      break;
-    case "draw":
-      text = logs[type];
-      element = `<p>${text}</p>`;
-      break;
-  }
-  $chat.insertAdjacentHTML("afterbegin", element);
-}
+export const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+};
+export const ATTACK = ["head", "body", "foot"];
