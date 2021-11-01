@@ -1,4 +1,4 @@
-import { createElement } from "./utils.js";
+import { createElement } from './utils.js';
 
 export class Player {
   constructor(properties) {
@@ -6,7 +6,7 @@ export class Player {
     this.name = properties.name;
     this.hp = properties.hp;
     this.img = properties.img;
-    this.weapon = properties.weapon;
+    //this.weapon = properties.weapon;
   }
 
   attack = () => {
@@ -27,12 +27,12 @@ export class Player {
   }
 
   createPlayerInDOM = () => {
-    const $newPlayer = createElement("div", `player${this.player}`);
-    const $progress = createElement("div", "progressbar");
-    const $newPlayerLife = createElement("div", "life");
-    const $newPlayerName = createElement("div", "name");
-    const $newCharacter = createElement("div", "character");
-    const $newCharacterImg = createElement("img");
+    const $newPlayer = createElement('div', `player${this.player}`);
+    const $progress = createElement('div', 'progressbar');
+    const $newPlayerLife = createElement('div', 'life');
+    const $newPlayerName = createElement('div', 'name');
+    const $newCharacter = createElement('div', 'character');
+    const $newCharacterImg = createElement('img');
 
     $newPlayerLife.style.width = `${this.hp}%`;
     $newPlayerName.textContent = this.name;
